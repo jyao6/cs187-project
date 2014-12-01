@@ -1,6 +1,7 @@
 import collections
 import random
 import re
+import timing
 import copy
 
 """
@@ -85,6 +86,24 @@ class MachineTranslation(object):
 		"""
 		pass
 
+	def make_denominator(self, fr_word, en_word, en_sent, i, j, M, L):
+		"""
+
+		Args:
+			fr_word: current french word
+			en_word: current english word
+			en_sent: current english sentence
+			i: position of french word in french sentence
+			j: position of english word in english sentence
+			M: length of french sentence
+			L: length of english sentence
+		Returns:
+			delta: delta value (differs for Model 1 and Model 2)
+		Raises:
+			None
+		"""
+		pass
+
 	def train_model(self):
 		"""
 		Trains the model by iterating through EM algorithm until t(f|e) and q(j,i,L,M) values converge.
@@ -102,10 +121,11 @@ class MachineTranslation(object):
 			for fr, en in self.corpus:
 				M, L = len(fr), len(en)
 				for i in range(1, M + 1):
+					fr_word = fr[i - 1]
+					denominator = self.make_denominator(fr_word, en, i, M, L)
 					for j in range(0, L + 1):
-						fr_word = fr[i - 1]
 						en_word = None if j == 0 else en[j - 1]
-						delta = self.calc_delta(fr_word, en_word, en, i, j, M, L)
+						delta = self.calc_delta(fr_word, en_word, en, i, j, M, L, denominator)
 						self.counts_ef[(en_word, fr_word)] += delta
 						self.counts_e[en_word] += delta
 						self.counts_jilm[(j,i,L,M)] += delta
@@ -174,29 +194,50 @@ Inherits from MachineTranslation, only calculates transition probabilities based
 french and english words themselves.
 """
 class Model1(MachineTranslation):
-	def calc_delta(self, fr_word, en_word, en_sent, i, j, M, L):
+	def calc_delta(self, fr_word, en_word, en_sent, i, j, M, L, denominator):
 		"""
 		Calculates delta value according to Model 1. (For full comment, see method in parent class MachineTranslation)
 		"""
 		numerator = self.t[(fr_word, en_word)]
+		"""
 		denominator = self.q[(0, i, L, M)] * self.t[(fr_word, None)]
 		for ind_j in range(1, L + 1):
 			denominator += self.t[(fr_word, en_sent[ind_j - 1])]
+			"""
 		return float(numerator) / denominator
+		
+	def make_denominator(self, fr_word, en_sent, i, M, L):
+		"""
+		"""
+		denominator = self.q[(0, i, L, M)] * self.t[(fr_word, None)]
+		for ind_j in range(1, L + 1):
+			denominator += self.t[(fr_word, en_sent[ind_j - 1])]
+		return denominator
 
 	def calc_align_prob(self, fr_index, fr_t, fr_len, en_index, en_t, en_len):
 		return self.t[(fr_t, en_t)]
 
 class Model2(MachineTranslation):
-	def calc_delta(self, fr_word, en_word, en_sent, i, j, M, L):
+	def calc_delta(self, fr_word, en_word, en_sent, i, j, M, L, denominator):
 		"""
 		Calculates delta value according to Model 2. (For full comment, see method in parent class MachineTranslation)
 		"""
 		numerator = self.t[(fr_word, en_word)] * self.q[(j,i,L,M)]
+		"""
 		denominator = self.q[(0, i, L, M)] * self.t[(fr_word, None)]
 		for ind_j in range(1, L + 1):
 			denominator += self.q[(ind_j, i, L, M)] * self.t[(fr_word, en_sent[ind_j - 1])]
+			"""
 		return float(numerator) / denominator
+		
+	def make_denominator(self, fr_word, en_sent, i, M, L):
+		"""
+		Calculates delta value according to Model 2. (For full comment, see method in parent class MachineTranslation)
+		"""
+		denominator = self.q[(0, i, L, M)] * self.t[(fr_word, None)]
+		for ind_j in range(1, L + 1):
+			denominator += self.q[(ind_j, i, L, M)] * self.t[(fr_word, en_sent[ind_j - 1])]
+		return denominator
 
 	def calc_align_prob(self, fr_index, fr_t, fr_len, en_index, en_t, en_len):
 		return self.t[(fr_t, en_t)] * self.q[(en_index, fr_index, en_len, fr_len)]
@@ -237,7 +278,14 @@ def main():
 		None
 	"""
 	print "Starting training..."
-	model1, model2 = train_consecutive_models("spanish.txt", "english.txt")
+	
+	model1 = Model1()
+	model1.process_text("fr_small.txt", "en_small.txt")
+	model1.train_model()
+	#print model1.t
+	#model1.print_word_pairings()
+	"""
+	model1, model2 = train_consecutive_models("fr_small.txt", "en_small.txt")
 	# show transition probabilities
 	print "MODEL 1 TRANSITION PROBABILITIES"
 	print model1.t
@@ -245,6 +293,11 @@ def main():
 	print model2.t
 	model1.print_word_pairings()
 	model2.print_word_pairings()
+	"""
 
 if __name__ == "__main__":
-	main()
+	#main()
+	myDict = RandomDict()
+	myDict['a'] = RandomDict()
+	myDict['a'][1] = 1
+	print myDict['a'], myDict['a'][1], myDict['a'][2], myDict['b'], myDict['c'][1]

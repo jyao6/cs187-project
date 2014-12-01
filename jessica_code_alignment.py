@@ -3,6 +3,8 @@ import random
 import re
 import timing
 import copy
+import os
+import cPickle as pickle
 
 """
 RandomDict
@@ -279,13 +281,27 @@ def main():
 	"""
 	print "Starting training..."
 	
-	model1 = Model1()
-	model1.process_text("fr_small.txt", "en_small.txt")
-	model1.train_model()
+	# model1 = Model1()
+	# model1.process_text("fr_small.txt", "en_small.txt")
+	# model1.train_model()
 	#print model1.t
 	#model1.print_word_pairings()
-	"""
-	model1, model2 = train_consecutive_models("fr_small.txt", "en_small.txt")
+	if os.path.isfile("model2.p"):
+		model1_file = open("model1.p", "rb")
+		model2_file = open("model2.p", "rb")
+		model1 = pickle.load(model1_file)
+		model2 = pickle.load(model2_file)
+		model1_file.close()
+		model2_file.close()
+	else:
+		model1, model2 = train_consecutive_models("fr_small.txt", "en_small.txt")
+		model1_file = open("model1.p", "wb")
+		model2_file = open("model2.p", "wb")
+		model1 = pickle.dump(model1_file)
+		model2 = pickle.dump(model2_file)
+		model1_file.close()
+		model2_file.close()
+
 	# show transition probabilities
 	print "MODEL 1 TRANSITION PROBABILITIES"
 	print model1.t
@@ -293,11 +309,11 @@ def main():
 	print model2.t
 	model1.print_word_pairings()
 	model2.print_word_pairings()
-	"""
+
 
 if __name__ == "__main__":
-	#main()
-	myDict = RandomDict()
-	myDict['a'] = RandomDict()
-	myDict['a'][1] = 1
-	print myDict['a'], myDict['a'][1], myDict['a'][2], myDict['b'], myDict['c'][1]
+	main()
+	# myDict = RandomDict()
+	# myDict['a'] = RandomDict()
+	# myDict['a'][1] = 1
+	# print myDict['a'], myDict['a'][1], myDict['a'][2], myDict['b'], myDict['c'][1]

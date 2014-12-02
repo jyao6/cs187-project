@@ -182,7 +182,7 @@ class MachineTranslation(object):
 				align_prob = self.calc_align_prob(fr_index + 1, fr_t, len(fr_tokens), en_index + 1, en_t, len(en_tokens))
 				if align_prob > max_val:
 					max_pos = en_index + 1
-					max_val = self.calc_align_prob(fr_index + 1, fr_t, len(fr_tokens), en_ind, None, len(en_tokens))
+					max_val = self.calc_align_prob(fr_index + 1, fr_t, len(fr_tokens), en_index + 1, en_t, len(en_tokens))
 			alignment.append(max_pos)
 		return alignment
 

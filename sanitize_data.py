@@ -29,12 +29,12 @@ def main():
 
   with open("sanitized-"+fr_file, 'w') as f:
     for line in fr_corpus:
-      f.write(" ".join(line) + ".\n")
+      f.write(" ".join(line) + "\n")
     f.close()
 
   with open("sanitized-"+en_file, 'w') as f:
     for line in en_corpus:
-      f.write(" ".join(line) + ".\n")
+      f.write(" ".join(line) + "\n")
     f.close()
 
 main()

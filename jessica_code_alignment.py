@@ -305,12 +305,12 @@ def main():
 		# model2.t = copy.deepcopy(model2_pickle.t)
 		# model2.q = copy.deepcopy(model2_pickle.q)
 
-		model1.generate_phrase_table("phrase-table")
+		model1_pickle.generate_phrase_table("phrase-table")
 		# print model1.best_alignment("yo no soy organizado", "I am not organized")
 		# print model2.best_alignment("yo no soy organizado", "I am not organized")
 	else:
 		print "Starting training..."
-		model1, model2 = train_consecutive_models("spanish-train.txt", "english-train.txt")
+		model1, model2 = train_consecutive_models("spanish1000.txt", "english1000.txt")
 		model1_file = open("model1.p", "wb")
 		model2_file = open("model2.p", "wb")
 		pickle.dump(model1, model1_file)

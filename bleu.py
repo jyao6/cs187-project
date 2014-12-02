@@ -97,7 +97,7 @@ class BLEU:
 
 def main():
 	b = BLEU();
-	b.set_files("english.txt", "english_machine_translated.txt");
+	b.set_files("english-test.txt", "./pharaoh-v1.2.3/out.txt");
 	score = b.calculate_score();
 	print "score is", score;
 

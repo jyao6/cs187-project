@@ -189,13 +189,14 @@ class MachineTranslation(object):
 	def calc_align_prob(self, fr_index, fr_t, fr_len, en_index, en_t, en_len):
 		pass
 
-	def generate_phrase_table(self, unigram_prob_file, output_file):
+	def generate_phrase_table(self, output_file):
 		with open(output_file, "w") as f:
-			unigram_prob_f = open(unigram_prob_file, "rb")
-			unigram_prob = pickle.load(unigram_prob_f)
-			unigram_prob_f.close()			
+			# unigram_prob_f = open(unigram_prob_file, "rb")
+			# unigram_prob = pickle.load(unigram_prob_f)
+			# unigram_prob_f.close()			
 			for (fr_token, en_token) in self.t:
-				f.write("{0} ||| {1} ||| {2}\n".format(fr_token, en_token, self.t[(fr_token, en_token)] * unigram_prob[en_token]))
+				if self.t[(fr_token, en_token)] > 0.01:
+					f.write("{0} ||| {1} ||| {2}\n".format(fr_token, en_token, self.t[(fr_token, en_token)]))
 
 """
 Model1
@@ -301,7 +302,7 @@ def main():
 		model2 = pickle.load(model2_file)
 		model1_file.close()
 		model2_file.close()
-		# model1.generate_phrase_table(None, "phrase_table")
+		model1.generate_phrase_table("phrase-table")
 	else:
 		print "Starting training..."
 		model1, model2 = train_consecutive_models("fr_small.txt", "en_small.txt")

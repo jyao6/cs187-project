@@ -288,12 +288,6 @@ def main():
 	Raises:
 		None
 	"""
-		
-	# model1 = Model1()
-	# model1.process_text("fr_small.txt", "en_small.txt")
-	# model1.train_model()
-	#print model1.t
-	#model1.print_word_pairings()
 	if os.path.isfile("model2.p"):
 		print "opening pickles"
 		model1_file = open("model1.p", "rb")
@@ -303,6 +297,8 @@ def main():
 		model1_file.close()
 		model2_file.close()
 		model1.generate_phrase_table("phrase-table")
+		# print model1.best_alignment("yo no soy organizado", "I am not organized")
+		# print model2.best_alignment("yo no soy organizado", "I am not organized")
 	else:
 		print "Starting training..."
 		model1, model2 = train_consecutive_models("fr_small.txt", "en_small.txt")

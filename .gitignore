@@ -1,0 +1,9 @@
+*.pyc
+.DS_Store
+english1000.txt
+model1.p
+model2.p
+pharaoh-v1.2.3/out.txt
+pharaoh-v1.2.3/phrase-table-hiro
+phrase-table-hiro
+spanish1000.txt

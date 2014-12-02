@@ -305,7 +305,8 @@ def main():
 		# model2.t = copy.deepcopy(model2_pickle.t)
 		# model2.q = copy.deepcopy(model2_pickle.q)
 
-		model1_pickle.generate_phrase_table("phrase-table")
+		model1_pickle.generate_phrase_table("phrase-table-model1")
+		model2_pickle.generate_phrase_table("phrase-table-model2")
 		# print model1.best_alignment("yo no soy organizado", "I am not organized")
 		# print model2.best_alignment("yo no soy organizado", "I am not organized")
 	else:

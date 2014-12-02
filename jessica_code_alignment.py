@@ -292,10 +292,19 @@ def main():
 		print "opening pickles"
 		model1_file = open("model1.p", "rb")
 		model2_file = open("model2.p", "rb")
-		model1 = pickle.load(model1_file)
-		model2 = pickle.load(model2_file)
+		model1_pickle = pickle.load(model1_file)
+		model2_pickle = pickle.load(model2_file)
 		model1_file.close()
 		model2_file.close()
+
+		# copy models because pickle files have old function implementations
+		# model1 = Model1()
+		# model2 = Model2()
+		# model1.t = copy.deepcopy(model1_pickle.t)
+		# model1.q = copy.deepcopy(model1_pickle.q)
+		# model2.t = copy.deepcopy(model2_pickle.t)
+		# model2.q = copy.deepcopy(model2_pickle.q)
+
 		model1.generate_phrase_table("phrase-table")
 		# print model1.best_alignment("yo no soy organizado", "I am not organized")
 		# print model2.best_alignment("yo no soy organizado", "I am not organized")

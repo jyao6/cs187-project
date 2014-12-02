@@ -305,7 +305,7 @@ def main():
 		model1.generate_phrase_table("phrase-table")
 	else:
 		print "Starting training..."
-		model1, model2 = train_consecutive_models("fr_small.txt", "en_small.txt")
+		model1, model2 = train_consecutive_models("spanish-train.txt", "english-train.txt")
 		model1_file = open("model1.p", "wb")
 		model2_file = open("model2.p", "wb")
 		pickle.dump(model1, model1_file)
@@ -324,7 +324,3 @@ def main():
 
 if __name__ == "__main__":
 	main()
-	# myDict = RandomDict()
-	# myDict['a'] = RandomDict()
-	# myDict['a'][1] = 1
-	# print myDict['a'], myDict['a'][1], myDict['a'][2], myDict['b'], myDict['c'][1]

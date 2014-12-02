@@ -287,36 +287,38 @@ def main():
 	Raises:
 		None
 	"""
-	print "Starting training..."
-	
+		
 	# model1 = Model1()
 	# model1.process_text("fr_small.txt", "en_small.txt")
 	# model1.train_model()
 	#print model1.t
 	#model1.print_word_pairings()
 	if os.path.isfile("model2.p"):
+		print "opening pickles"
 		model1_file = open("model1.p", "rb")
 		model2_file = open("model2.p", "rb")
 		model1 = pickle.load(model1_file)
 		model2 = pickle.load(model2_file)
 		model1_file.close()
 		model2_file.close()
+		# model1.generate_phrase_table(None, "phrase_table")
 	else:
+		print "Starting training..."
 		model1, model2 = train_consecutive_models("fr_small.txt", "en_small.txt")
 		model1_file = open("model1.p", "wb")
 		model2_file = open("model2.p", "wb")
-		model1 = pickle.dump(model1_file)
-		model2 = pickle.dump(model2_file)
+		pickle.dump(model1, model1_file)
+		pickle.dump(model2, model2_file)
 		model1_file.close()
 		model2_file.close()
 
-	# show transition probabilities
-	print "MODEL 1 TRANSITION PROBABILITIES"
-	print model1.t
-	print "MODEL 2 TRANSITION PROBABILITIES"
-	print model2.t
-	model1.print_word_pairings()
-	model2.print_word_pairings()
+		# show transition probabilities
+		print "MODEL 1 TRANSITION PROBABILITIES"
+		print model1.t
+		print "MODEL 2 TRANSITION PROBABILITIES"
+		print model2.t
+		model1.print_word_pairings()
+		model2.print_word_pairings()
 
 
 if __name__ == "__main__":
